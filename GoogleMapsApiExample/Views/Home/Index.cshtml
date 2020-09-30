@@ -1,0 +1,36 @@
+﻿@model HomeModel
+
+@{
+    ViewData["Title"] = "Home Page";
+    var apiKey = ViewData["ApiKey"];
+    var locations = Model.Locations.ToList();
+}
+
+<div class="text-center">
+    <h1 class="display-4">Google Map With Locations</h1>
+    <div class="container map-container">
+        <div id="map"></div>
+    </div>
+</div>
+@section ExternalScripts
+{ 
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=@(apiKey)&callback=initMap&libraries=&v=weekly" defer></script>
+}
+
+@section Scripts
+{
+    <script>
+        var mapLocations = [
+            @for(var i = 0;i < locations.Count;i++)
+            {
+                var loc = locations[i];
+                    <text>
+                        ['@loc.Name', @loc.Latitude, @loc.Longitude, @(i+1)],
+                    </text>
+            }
+        ];
+
+        $(document).ready(function () { initMap(); });
+    </script>
+}
